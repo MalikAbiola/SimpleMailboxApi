@@ -1,0 +1,7 @@
+.idea
+vendor
+.env
+.DS_Store
+coverage-report
+build
+composer.lock
