@@ -30,4 +30,6 @@ class Mail extends Model
         'archived' => 'boolean',
         'time_sent' => 'datetime'
     ];
+
+    protected $primaryKey = 'uid';
 }

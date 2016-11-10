@@ -12,5 +12,14 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return [
+        'description' => "Oberlo Working Case Assignment",
+        'author' => "Malik Abiola"
+    ];
 });
+
+$app->get('/mails', 'MailController@index');
+
+$app->get('/archives', 'MailController@archives');
+
+$app->get('/mails/{id}', 'MailController@show');

@@ -10,12 +10,13 @@ namespace App\Console\Commands;
 
 
 use App\Repositories\MailRepository;
+use App\Traits\LogUtils;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 use Mockery\CountValidator\Exception;
 
 class ImportTestData extends Command
 {
+    use LogUtils;
     /**
      * The name and signature of the console command.
      *
@@ -57,14 +58,7 @@ class ImportTestData extends Command
 
         } catch (Exception $e) {
             $this->error("An Error Occurred during importation. Please check logs.");
-            Log::error(
-                $e->getMessage(),
-                [
-                    'file'  => $e->getFile(),
-                    'line'  => $e->getLine(),
-                    'trace' => $e->getTraceAsString()
-                ]
-            );
+            $this->logError($e);
         }
 
         return;
