@@ -90,17 +90,18 @@ class MailRepository
      * @param  $id
      * @return mixed
      */
-    public function update(array $data, $id)
+    public function update($id, array $data)
     {
         return $this->model->where("uid", $id)->update($data);
     }
 
     /**
      * Get mail transformer for presentation
+     * @param $showArchiveStatus
      * @return MailTransformer
      */
-    public function getTransformer()
+    public function getTransformer($showArchiveStatus = false)
     {
-        return new MailTransformer;
+        return new MailTransformer($showArchiveStatus);
     }
 }

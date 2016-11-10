@@ -23,3 +23,5 @@ $app->get('/mails', 'MailController@index');
 $app->get('/archives', 'MailController@archives');
 
 $app->get('/mails/{id}', 'MailController@show');
+
+$app->patch('/mails/{id}', 'MailController@update');

@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\Repositories\MailRepository;
+use App\Validators\RequestsValidator;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;
 
@@ -56,7 +57,7 @@ class MailController extends Controller
             $message = $this->mailRepository->find($id);
 
             if ($message) {
-                return $this->respondWithItem($message, $this->mailRepository->getTransformer());
+                return $this->respondWithItem($message, $this->mailRepository->getTransformer(true));
             }
 
             return $this->errorNotFound("Mail Not Found");
@@ -79,6 +80,46 @@ class MailController extends Controller
             $mails = $this->mailRepository->getArchived($limit, $page);
 
             return $this->respondWithPaginatedCollection($mails, $this->mailRepository->getTransformer());
+
+        } catch (\Exception $exception) {
+            $this->logError($exception);
+            return $this->errorInternalError();
+        }
+    }
+
+    /**
+     * Update mail object.
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function update($id)
+    {
+        try {
+            $validateUpdateRequest = RequestsValidator::validateMailUpdateRequest($this->request);
+
+            if (! $validateUpdateRequest->passes()) {
+                return $this->errorWrongArgs($validateUpdateRequest->errors());
+            }
+
+            $mail = $this->mailRepository->find($id);
+
+            if (! $mail) {
+                return $this->errorNotFound("Mail Not Found");
+            }
+
+            $updateRead = $this->request->get('read', null);
+
+            if ($updateRead) {
+                $this->mailRepository->update($id, ['read' => (bool) $updateRead]);
+            }
+
+            $updateArchive = $this->request->get('archive', null);
+
+            if ($updateArchive) {
+                $this->mailRepository->update($id, ['archived' => (bool) $updateArchive]);
+            }
+
+            return $this->respondSuccess();
 
         } catch (\Exception $exception) {
             $this->logError($exception);
