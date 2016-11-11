@@ -37,14 +37,4 @@ class Mail extends Model
     ];
 
     protected $primaryKey = 'uid';
-
-    /**
-     * Convert time_sent column to data time string during retrieval.
-     * @param $value
-     * @return string
-     */
-    public function getTimeSentAttribute($value)
-    {
-        return Carbon::createFromTimestamp($value)->toDateTimeString();
-    }
 }

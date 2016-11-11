@@ -11,6 +11,7 @@ namespace App\Repositories;
 
 use App\Mail;
 use App\Transformers\MailTransformer;
+use Carbon\Carbon;
 
 class MailRepository
 {
@@ -38,6 +39,7 @@ class MailRepository
         $this->model->unguard();
 
         foreach($messages as $message) {
+            $message['time_sent'] = Carbon::createFromTimestamp($message['time_sent'])->toDateTimeString();
             $this->model->create($message);
         }
 

@@ -43,7 +43,7 @@ class MailRepositoryTest extends TestCase
         $this->mailRepository->importMessages($testImportMessages);
 
         $this->assertCount(2, $this->mailRepository->all());
-        $this->seeInDatabase("mails",$testImportMessages[0]);
+        $this->assertNotNull($this->mailRepository->find($testImportMessages[0]['uid']));
     }
 
     public function testImportMessagesThrowsException()

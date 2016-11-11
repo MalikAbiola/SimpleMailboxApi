@@ -8,7 +8,6 @@
 
 namespace App\Console\Commands;
 
-
 use App\Repositories\MailRepository;
 use App\Traits\LogUtils;
 use Illuminate\Console\Command;

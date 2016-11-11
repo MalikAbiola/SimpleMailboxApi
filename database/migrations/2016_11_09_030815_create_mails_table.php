@@ -18,7 +18,7 @@ class CreateMailsTable extends Migration
             $table->string("sender");
             $table->string("subject");
             $table->longText("message");
-            $table->unsignedInteger("time_sent");
+            $table->timestamp("time_sent");
             $table->integer("read")->default(0);
             $table->integer("archived")->default(0);
             $table->timestamps();
