@@ -12,6 +12,7 @@ namespace App\Console\Commands;
 use App\Repositories\MailRepository;
 use App\Traits\LogUtils;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Mockery\CountValidator\Exception;
 
 class ImportTestData extends Command
@@ -48,6 +49,8 @@ class ImportTestData extends Command
     public function handle()
     {
         try {
+            Artisan::call("migrate");
+    
             $file = is_null($this->argument("file")) ? __DIR__.'/../../../messages_sample.json' : $this->argument("file");
 
             $messages = json_decode(file_get_contents($file), true);

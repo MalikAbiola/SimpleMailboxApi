@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="bootstrap/app.php"
+         bootstrap="phpunit_bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -19,6 +19,12 @@
             <directory suffix=".php">./app</directory>
             <exclude>
                 <file>./app/Http/routes.php</file>
+                <directory suffix=".php">app/Console</directory>
+                <directory suffix=".php">app/Exceptions</directory>
+                <directory suffix=".php">app/Events</directory>
+                <directory suffix=".php">app/Jobs</directory>
+                <directory suffix=".php">app/Providers</directory>
+                <directory suffix=".php">app/Listeners</directory>
             </exclude>
         </whitelist>
     </filter>
@@ -26,4 +32,8 @@
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
     </php>
+    <logging>
+        <log type="coverage-html" target="./tests/build/coverage" lowUpperBound="35"
+             highLowerBound="70"/>
+    </logging>
 </phpunit>

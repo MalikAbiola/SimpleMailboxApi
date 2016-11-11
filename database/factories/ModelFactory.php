@@ -17,3 +17,12 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->email,
     ];
 });
+
+$factory->define(App\Mail::class, function (Faker\Generator $faker) {
+    return [
+        "sender" => $faker->name,
+        "subject" => $faker->words(2, true),
+        "message" => $faker->paragraphs(3, true),
+        "time_sent" => $faker->unixTime
+    ];
+});

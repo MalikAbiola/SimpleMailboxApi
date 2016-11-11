@@ -8,6 +8,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Mail extends Model
@@ -25,11 +26,25 @@ class Mail extends Model
         'archived',
     ];
 
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'read' => 'boolean',
         'archived' => 'boolean',
-        'time_sent' => 'datetime'
     ];
 
     protected $primaryKey = 'uid';
+
+    /**
+     * Convert time_sent column to data time string during retrieval.
+     * @param $value
+     * @return string
+     */
+    public function getTimeSentAttribute($value)
+    {
+        return Carbon::createFromTimestamp($value)->toDateTimeString();
+    }
 }
