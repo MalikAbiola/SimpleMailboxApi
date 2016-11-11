@@ -54,10 +54,10 @@ class MailController extends Controller
     public function show($id)
     {
         try {
-            $message = $this->mailRepository->find($id);
+            $mail = $this->mailRepository->find($id);
 
-            if ($message) {
-                return $this->respondWithItem($message, $this->mailRepository->getTransformer(true));
+            if ($mail) {
+                return $this->respondWithItem($mail, $this->mailRepository->getTransformer(true));
             }
 
             return $this->errorNotFound("Mail Not Found");

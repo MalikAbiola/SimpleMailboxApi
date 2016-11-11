@@ -88,9 +88,9 @@ class Controller extends BaseController
 
     public function respondWithError($message, array $extraData = [])
     {
-        if ($this->statusCode === Response::HTTP_OK) {
+        if ($this->getStatusCode() === Response::HTTP_OK) {
             trigger_error(
-                "You better have a really good reason for returning an error on a 200...",
+                "Errors Shouldn't be returned when status code is 200",
                 E_USER_WARNING
             );
         }
@@ -101,18 +101,6 @@ class Controller extends BaseController
                 'message' => $message,
             ], $extraData)
         ]);
-    }
-
-    /**
-     * Generates a Response with a 403 HTTP header and a given message.
-     *
-     * @param string $message
-     * @return Response
-     */
-    public function errorForbidden($message = 'Forbidden')
-    {
-        return $this->setStatusCode(Response::HTTP_FORBIDDEN)
-            ->respondWithError($message);
     }
 
     /**

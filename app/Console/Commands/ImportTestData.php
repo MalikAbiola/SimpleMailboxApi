@@ -50,7 +50,7 @@ class ImportTestData extends Command
     {
         try {
             Artisan::call("migrate");
-    
+
             $file = is_null($this->argument("file")) ? __DIR__.'/../../../messages_sample.json' : $this->argument("file");
 
             $messages = json_decode(file_get_contents($file), true);

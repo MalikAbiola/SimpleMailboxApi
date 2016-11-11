@@ -1,6 +1,9 @@
 <?php
 
+use App\Mail;
+use App\Repositories\MailRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class TestCase extends Laravel\Lumen\Testing\TestCase
@@ -29,7 +32,7 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
         parent::tearDown();
     }
 
-    protected function getTestRequest($requestMethod, $otherData)
+    protected function getTestRequest($requestMethod, $otherData = [])
     {
         $testRequest = new Request();
         $testRequest->setMethod($requestMethod);
@@ -39,8 +42,26 @@ class TestCase extends Laravel\Lumen\Testing\TestCase
         return $testRequest;
     }
 
-    public function generateTestMails($count = 5, $additionalAttributes = [])
+    protected function generateTestMails($count = 5, $additionalAttributes = [])
     {
-        return factory(\App\Mail::class, $count)->create($additionalAttributes);
+        return factory(Mail::class, $count)->create($additionalAttributes);
+    }
+
+    protected function getExceptionThrowingMockMailRepository($methodToMock)
+    {
+        $mockedMailRepository = \Mockery::mock(App::make(MailRepository::class))->makePartial();
+        $mockedMailRepository->shouldReceive($methodToMock)->withAnyArgs()->andThrow(new Exception("Mock Exception"));
+
+        return $mockedMailRepository;
+    }
+
+
+    /**
+     * Turn on middleware for the test.
+     *
+     */
+    protected function turnMiddlewareOn()
+    {
+        $this->app->instance('middleware.disable', false);
     }
 }
